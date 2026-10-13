@@ -45,10 +45,10 @@ claude mcp add demo-server -- C:\Users\ab845312\Downloads\github\mcp\.venv\Scrip
 ## Chat with a local LLM (`chat_client.py`)
 
 `client.py` uses hard-coded inputs because there's no AI in the loop. `chat_client.py` adds one:
-you type a question, a local open-source model (via [Ollama](https://ollama.com)) decides which
+you type a question, a local open-source model (Qwen3 4B, run via [Ollama](https://ollama.com)) decides which
 tool to call, the client runs it on the MCP server, and the model answers using the result.
 
-Prerequisites: install Ollama, then pull a model that supports tool calling:
+Prerequisites: install Ollama, then pull the Qwen3 model (it supports tool calling):
 
 ```bash
 ollama pull qwen3:4b

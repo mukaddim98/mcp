@@ -1,12 +1,12 @@
 """
-An interactive MCP client powered by a LOCAL open-source LLM (via Ollama).
+An interactive MCP client powered by a LOCAL open-source LLM (Qwen3 4B, run via Ollama).
 
 client.py showed the protocol step by step with hard-coded inputs. This file
 shows how MCP is used for real: YOU type a question in plain English, an AI
 model decides which tool (if any) to call and with what arguments, the client
 runs that tool on the MCP server, and the model uses the result to answer.
 
-    You ──question──▶ chat_client.py ──messages + tool list──▶ LLM (Ollama)
+    You ──question──▶ chat_client.py ──messages + tool list──▶ LLM (qwen3)
                             │                                     │
                             │◀──"please call add(a=5, b=7.5)"─────┘
                             │
@@ -23,12 +23,12 @@ middleman between the model and the MCP server(s).
 PREREQUISITES
 -------------
   1. Ollama installed and running (https://ollama.com).
-  2. A model that supports tool calling, e.g.:   ollama pull qwen3:4b
+  2. The Qwen3 model (supports tool calling):    ollama pull qwen3:4b
   3. Python packages:                            pip install -r requirements.txt
 
 Run it with:
 
-    python chat_client.py                  # uses qwen3:4b
+    python chat_client.py                  # uses qwen3:4b (the default)
     python chat_client.py --model mistral  # or any other tool-capable model
 """
 
@@ -73,8 +73,9 @@ def recover_text_tool_calls(message: ollama.Message, tool_names: set[str]) -> ol
     """Workaround for small models that write tool calls as plain text.
 
     Normally Ollama recognises a tool call and puts it in `message.tool_calls`.
-    Some models (notably mistral 7B) sometimes skip the special marker and just
-    write the JSON into the reply, e.g.:
+    The default model, qwen3, normally does this correctly, so this rarely
+    triggers. But some other models (notably mistral 7B) sometimes skip the
+    special marker and just write the JSON into the reply, e.g.:
 
         [{"name": "multiply", "arguments": {"a": 12.3, "b": 4}}]
         12.3 * 4 = 49.2      <- a guess, written before the tool even ran
