@@ -51,7 +51,7 @@ tool to call, the client runs it on the MCP server, and the model answers using 
 Prerequisites: install Ollama, then pull a model that supports tool calling:
 
 ```bash
-ollama pull mistral
+ollama pull qwen3:4b
 ```
 
 Run it:
@@ -63,7 +63,7 @@ Run it:
 Use a different model:
 
 ```bash
-.venv\Scripts\python chat_client.py --model qwen3:4b
+.venv\Scripts\python chat_client.py --model mistral
 ```
 
 Example session:

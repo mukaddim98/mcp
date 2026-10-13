@@ -23,13 +23,13 @@ middleman between the model and the MCP server(s).
 PREREQUISITES
 -------------
   1. Ollama installed and running (https://ollama.com).
-  2. A model that supports tool calling, e.g.:   ollama pull mistral
+  2. A model that supports tool calling, e.g.:   ollama pull qwen3:4b
   3. Python packages:                            pip install -r requirements.txt
 
 Run it with:
 
-    python chat_client.py                  # uses mistral
-    python chat_client.py --model qwen3:4b # or any other tool-capable model
+    python chat_client.py                  # uses qwen3:4b
+    python chat_client.py --model mistral  # or any other tool-capable model
 """
 
 import argparse
@@ -208,6 +208,10 @@ async def chat(model: str) -> None:
 
 
 if __name__ == "__main__":
+    # Models like to use emoji. Windows can default to an old encoding (cp1252)
+    # that can't print them, so switch output to UTF-8 to avoid a crash.
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
     parser = argparse.ArgumentParser(description="Chat with the MCP demo server through a local LLM.")
-    parser.add_argument("--model", default="mistral", help="Ollama model name (must support tools)")
+    parser.add_argument("--model", default="qwen3:4b", help="Ollama model name (must support tools)")
     asyncio.run(chat(parser.parse_args().model))
