@@ -58,11 +58,12 @@ mcp = MCPServer(
 #   - The function name becomes the tool name ("add").
 #   - The docstring becomes the tool's description (the AI reads this to
 #     decide WHEN to use the tool, so make it clear!).
-#   - The type hints (a: int, b: int) become the tool's JSON "inputSchema",
-#     which tells the client what arguments to send.
+#   - The type hints (a: float, b: float) become the tool's JSON "inputSchema",
+#     which tells the client what arguments to send. float becomes "number"
+#     (whole numbers and decimals); int would become "integer" (whole only).
 #   - The return value is sent back to the client as the tool result.
 @mcp.tool()
-def add(a: int, b: int) -> int:
+def add(a: float, b: float) -> float:
     """Add two numbers together and return the sum."""
     return a + b
 

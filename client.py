@@ -98,8 +98,8 @@ async def main() -> None:
         # server runs the Python function and returns the result as a list of
         # "content" blocks (text, images, etc.). Here it's one text block.
         print("\n=== Calling tools ===")
-        result = await client.call_tool("add", {"a": 5, "b": 7})
-        print(f"add(5, 7)        -> {result.content[0].text}")
+        result = await client.call_tool("add", {"a": 5, "b": 7.5})
+        print(f"add(5, 7.5)      -> {result.content[0].text}")
 
         result = await client.call_tool("multiply", {"a": 3, "b": 4.5})
         print(f"multiply(3, 4.5) -> {result.content[0].text}")
