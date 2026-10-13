@@ -41,3 +41,41 @@ python -m venv .venv
 ```bash
 claude mcp add demo-server -- C:\Users\ab845312\Downloads\github\mcp\.venv\Scripts\python.exe C:\Users\ab845312\Downloads\github\mcp\server.py
 ```
+
+## Chat with a local LLM (`chat_client.py`)
+
+`client.py` uses hard-coded inputs because there's no AI in the loop. `chat_client.py` adds one:
+you type a question, a local open-source model (via [Ollama](https://ollama.com)) decides which
+tool to call, the client runs it on the MCP server, and the model answers using the result.
+
+Prerequisites: install Ollama, then pull a model that supports tool calling:
+
+```bash
+ollama pull mistral
+```
+
+Run it:
+
+```bash
+.venv\Scripts\python chat_client.py
+```
+
+Use a different model:
+
+```bash
+.venv\Scripts\python chat_client.py --model qwen3:4b
+```
+
+Example session:
+
+```
+You: What is 12.3 times 4?
+  [tool] multiply({'a': 12.3, 'b': 4})
+  [tool] -> 49.2
+AI: 12.3 times 4 equals 49.2.
+```
+
+Notes:
+- Only the server's **tools** are given to the model (not resources or prompts).
+- Small models sometimes skip a tool and guess, or write the tool call as plain text.
+  `chat_client.py` includes a small workaround for the latter (`recover_text_tool_calls`).
